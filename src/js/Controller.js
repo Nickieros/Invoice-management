@@ -1,6 +1,6 @@
-import Utils  from "./Utils.js";
-import Model  from "./Model.js";
-import View   from "./View.js";
+import Utils from "./Utils.js";
+import Model from "./Model.js";
+import View from "./View.js";
 
 /**
  * Class Controller
@@ -31,8 +31,31 @@ export default class extends Utils {
    */
   _addEventListeners() {
     window.addEventListener("load", async () => {
-      await this.iModel.downloadInvoices()
+      await this.iModel
+      .downloadInvoices()
       .then(() => this.iView.renderMainPage(this.iModel.invoices));
     });
+
+    window.addEventListener("click", this.onUserAction.bind(this));
+  }
+
+  /**
+   * Handling user actions
+   * @param {Event} event
+   */
+  onUserAction(event) {
+    const element = event.target;
+    if (element.tagName === "INPUT" && element.type === "button") {
+      switch (element.value) {
+      case "Remove":
+        // eslint-disable-next-line no-case-declarations
+        const row = element.closest(".tableRow");
+        this.iModel.removeInvoice(row.id);
+        row.parentElement.removeChild(row);
+        break;
+
+      default:
+      }
+    }
   }
 }

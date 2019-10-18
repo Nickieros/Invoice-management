@@ -31,8 +31,33 @@ export default class extends Utils {
         mode: "cors",
       },
     )
-    .then(response => response.json())
+    .then(response => !this._validateResponse(response) || response.json())
     .then(json => { this.invoices = Object.values(JSON.parse(JSON.stringify(json))); })
-    .catch(error => console.error("Utils->downloadInvoices: ", error.message));
+    .catch(error => console.error("Utils -> downloadInvoices: ", error.message));
+  }
+
+  async removeInvoice(invoiceId) {
+    await fetch(
+      `${this.DATA_SOURCE_NAME}/invoices/${invoiceId}`,
+      {
+        headers: { "Content-Type": "application/json" },
+        method: "DELETE",
+        mode: "cors",
+      },
+    )
+    .then(response => this._validateResponse(response))
+    .catch(error => console.error("Utils -> removeInvoice: ", error.message));
+  }
+
+  /**
+   * Validate fetch response from the server. Returns true if validation is successful, else throw error
+   * @param {Response} response fetch response from server
+   * @private
+   */
+  _validateResponse(response) {
+    if (!response.ok) { // Client (400-500) and server (500-600) errors responses
+      throw Error(`_validateResponse() found client error: ${response.status} ${response.statusText} when fetching ${response.url}`);
+    }
+    return true;
   }
 }

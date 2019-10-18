@@ -12,23 +12,27 @@ export default class extends Utils {
   renderMainPage(invoices) {
     // invoices validation
     if (!this.isArray(invoices)) throw Error("View -> renderMainPage: invoices must be an Array");
-    if (!invoices.every(row => {
-      // eslint-disable-next-line no-underscore-dangle
-      const iId = row._id;
-      const iNumber = row.number;
-      const iDateCreated = row.date_created;
-      const iDateSupplied = row.date_supplied;
-      return iId
-        && iNumber
-        && iDateCreated
-        && iDateSupplied
-        && this.isString(iId)
-        && this.isNumber(iNumber)
-        && this.isString(iDateCreated)
-        && this.isString(iDateSupplied);
-    })) {
+    if (
+      !invoices.every(row => {
+        // eslint-disable-next-line no-underscore-dangle
+        const iId = row.id;
+        const iNumber = row.number;
+        const iDateCreated = row.date_created;
+        const iDateSupplied = row.date_supplied;
+        return (
+          iId
+          && iNumber
+          && iDateCreated
+          && iDateSupplied
+          && this.isString(iId)
+          && this.isNumber(iNumber)
+          && this.isString(iDateCreated)
+          && this.isString(iDateSupplied)
+        );
+      })
+    ) {
       throw Error(`View -> renderMainPage: objects in invoices must have following properties and their types:
-        {_id: string, number: number, date_created: string, date_supplied: string, comment: string}`);
+        {id: string, number: number, date_created: string, date_supplied: string}`);
     }
 
     const content = document.createElement("div");
@@ -56,17 +60,19 @@ export default class extends Utils {
             </div>`;
 
     for (let i = 0; i < invoices.length; i++) {
+      /* eslint-disable no-underscore-dangle */
       htmlBuffer += `
-            <div class="tableRow">
+            <div class="tableRow" id="${invoices[i].id}">
                 <div data-header="Create:&nbsp;">${invoices[i].date_created}</div>
                 <div data-header="No:&nbsp;">INV-${invoices[i].number}</div>
                 <div data-header="Supply:&nbsp;">${invoices[i].date_supplied}</div>
-                <div data-header="Comment:&nbsp;">${invoices[i].comment}</div>
+                <div data-header="Comment:&nbsp;">${invoices[i].comment === undefined ? "" : invoices[i].comment}</div>
                 <div data-header="Actions:&nbsp;" class="buttons">
                     <input type="button" value="Edit">
                     <input type="button" value="Remove">
                 </div>
             </div>`;
+      /* eslint-enable no-underscore-dangle */
     }
 
     htmlBuffer += `
