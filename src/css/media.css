@@ -1,0 +1,230 @@
+@media screen, projection {
+	body {
+		font-family: sans-serif;
+		background-color: #f1f5f8;
+		margin: 0;
+		padding: 0;
+		font-size: calc(.4em + .8vw);
+	}
+
+	.content {
+		margin: .5em 1.5em;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.panel {
+		margin: 1.14em 0;
+		padding: .45em 1.2em 1.35em 1.2em;
+		background-color: white;
+		border: #e4e8eb solid 0.1em;
+		border-radius: .15em/.15em;
+	}
+
+	.header {
+		margin: 2.25em 0 1.95em 0;
+		font-size: 130%;
+		font-weight: bold;
+		color: #787e8a;
+		width: 100%;
+		border-bottom: .1em solid #e4e8eb;
+		line-height: 0.1em;
+	}
+
+	.header p {
+		display: inline;
+		border-left: #e4e8eb solid .3em;
+		padding: .5em 1em .7em .7em;
+		background: #f1f5f8;
+	}
+
+	.section {
+		margin: 0;
+		font-weight: bold;
+		padding: 1.2em 0 0.75em 0;
+		font-size: 1em;
+	}
+
+	.actions{
+		color: black;
+		font-weight: bold;
+		flex-direction: column;
+	}
+
+	.buttons {
+		display: inline-flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+	}
+
+	.buttons input {
+		font-size: 1em;
+		font-weight: normal;
+		padding: .7em 1.5em;
+		color: white;
+		background-color: #4a74fe;
+		border-radius: .2em/.2em;
+		border: none;
+	}
+
+	.table {
+		display: table;
+		width: 100%;
+	}
+
+	.table div {
+		font-size: 0.9em;
+		color: black;
+		padding: 1.4em 0.5em 1.2em 1.4em;
+	}
+
+	.tableRow {
+		display: table-row;
+	}
+
+	.tableRow .buttons {
+		font-size: 1em;
+		color: white;
+		padding: 0;
+		width: 10%;
+	}
+
+	.tableRow .buttons input {
+		color: white;
+		background-color: #4a74fe;
+		border-radius: .2em/.2em;
+		border: none;
+		padding: .3em .7em;
+	}
+
+	.tableRow div {
+		display: table-cell;
+		border-bottom: .1em solid #e4e8eb;
+		white-space: nowrap;
+	}
+
+	.tableRow div:nth-child(2){
+		color: #2a45b7;
+	}
+
+	.tableRow:first-child {
+		font-weight: bold;
+		border: .1em solid #e4e8eb;
+		background-color: #f1f5f8;
+	}
+
+	.tableRow:first-child div {
+		padding-bottom: 1.2em;
+		color: #787e8a;
+		font-size: 1em;
+	}
+
+	.tableRow div:nth-child(4){
+		white-space: normal;
+	}
+}
+
+@media (max-aspect-ratio: 1/1 ) {
+
+	body {
+		font-size: calc(.8rem);
+	}
+
+	.header {
+		margin: 1em 0;
+	}
+
+	.table {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	.table div {
+		padding: .5em;
+
+	}
+
+	.tableRow {
+		display: flex;
+		flex-direction: column;
+		width: auto;
+		border: .1em solid #e4e8eb;
+		border-radius: .2em/.2em;
+		padding: .2em;
+		margin: .2em;
+	}
+
+	.tableRow:first-child {
+		display: none;
+	}
+
+	.tableRow .buttons {
+		/*white-space: normal;*/
+		width: auto;
+		font-size: .9em;
+	}
+
+	.buttons input {
+		font-size: 1em;
+		font-weight: normal;
+		padding: .2em .4em;
+		color: white;
+		background-color: #4a74fe;
+		border-radius: .2em/.2em;
+		border: none;
+	}
+
+	.tableRow .buttons input {
+		padding: .2em .4em;
+	}
+
+	.tableRow div {
+		padding: 0;
+		border: none;
+		white-space: nowrap;
+		max-width: 15em;
+	}
+
+	.tableRow div:nth-child(4) {
+		display: inline-flex;
+	}
+
+	.tableRow div:before {
+		content: attr(data-header);
+		color: black;
+		background-color: #f1f5f8;
+		text-align: right;
+		display: inline-block;
+		margin-right: .5em;
+		min-width: 5.2em;
+		white-space: nowrap;
+		line-height: 2em;
+	}
+
+	.tableRow div:nth-child(4):before {
+		/*line-height: 1.25em;*/
+	}
+
+	.content {
+		margin: .2em .5em;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.panel {
+		margin: .5em 0;
+		padding: .2em .5em .5em .5em;
+		background-color: white;
+		border: #e4e8eb solid 0.1em;
+		border-radius: .15em/.15em;
+	}
+
+	.section {
+		margin: 0;
+		font-weight: bold;
+		padding: .5em 0 0.2em 0;
+		font-size: 1em;
+	}
+}
