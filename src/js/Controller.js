@@ -33,7 +33,8 @@ export default class extends Utils {
     window.addEventListener("load", async () => {
       await this.iModel
       .downloadInvoices()
-      .then(() => this.iView.renderPageMain(this.iModel.invoices));
+      .then(() => this.iView.renderPageMain(this.iModel.invoices))
+      .then(this.iView.showPageMain);
     });
 
     window.addEventListener("click", this.onUserAction.bind(this));
@@ -55,7 +56,9 @@ export default class extends Utils {
         break;
 
       case "Add new":
-
+        this.iView.renderPageAddNewInvoice(this.iModel.getLastInvoiceNumber());
+        this.iView.showPageAddNewInvoice();
+        this.iView.hidePageMain();
         break;
 
       default:

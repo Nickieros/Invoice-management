@@ -129,4 +129,52 @@ export default class {
     // eslint-disable-next-line no-bitwise
     return (`INV-000000${(invoiceNumber >>> 0)}`).substr(-6);
   }
+
+  /**
+   * Show element by assigning class 'visible' with visibility: visible and remove class 'hidden'
+   * @param {string} selector element selector
+   */
+  static show(selector) {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.classList.remove("hidden");
+      element.classList.add("visible");
+    } else throw Error("element not found");
+  }
+
+  /**
+   * Hide element by assigning class 'hidden' with visibility: hidden and remove class 'visible'
+   * @param {string} selector element selector
+   */
+  static hide(selector) {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.classList.remove("visible");
+      element.classList.add("hidden");
+    } else throw Error("element not found");
+  }
+
+  /**
+   * Enable element by assigning class 'enabled' with display: block and remove class 'disabled'
+   * @param {string} selector element selector
+   */
+  static enable(selector) {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.classList.remove("disabled");
+      element.classList.add("enabled");
+    } else throw Error("element not found");
+  }
+
+  /**
+   * Disable element by assigning class 'disabled' with display: none and remove class 'enabled'
+   * @param {string} selector element selector
+   */
+  static disable(selector) {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.classList.remove("enabled");
+      element.classList.add("disabled");
+    } else throw Error("element not found");
+  }
 }

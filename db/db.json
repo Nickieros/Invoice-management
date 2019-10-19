@@ -1,5 +1,12 @@
-{
-  "invoices": [
+{ "invoices":
+  [
+    {
+      "id": "5ba37c48185c0c98e6880bed",
+      "number": 63805,
+      "date_created": "23-11-2015",
+      "date_supplied": "20-06-2016",
+      "comment": "ad do labore nisi qui dolore Lorem sint tempor velit"
+    },
     {
       "id": "5ba37c486790868e50ae1d80",
       "number": 60568,

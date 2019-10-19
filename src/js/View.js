@@ -7,6 +7,11 @@ export default class extends Utils {
   // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
+
+    // add dummy panel for animated transition appearance to the main page
+    const panelDummy = document.createElement("div");
+    panelDummy.className = "panelDummy visible";
+    document.body.appendChild(panelDummy);
   }
 
   /**
@@ -15,7 +20,7 @@ export default class extends Utils {
    */
   renderPageMain(invoices) {
     const mainPage = document.createElement("div");
-    mainPage.className = "page main";
+    mainPage.className = "page main hidden";
 
     mainPage.innerHTML = `${this
     ._createHtmlHeader("Invoices")}${this
@@ -31,7 +36,7 @@ export default class extends Utils {
    */
   renderPageAddNewInvoice(lastInvoiceNumber) {
     const addNewInvoicePage = document.createElement("div");
-    addNewInvoicePage.className = "page addNewInvoice";
+    addNewInvoicePage.className = "page addNewInvoice hidden";
 
     addNewInvoicePage.innerHTML = `${this
     ._createHtmlHeader("Create Invoice")}${this
@@ -126,65 +131,28 @@ export default class extends Utils {
    * Show main page
    */
   showPageMain() {
-    this._show(".page.main");
+    Utils.show(".page.main");
+    Utils.hide(".panelDummy");
   }
 
   /**
    * Show page with form for adding a new invoice
    */
   showPageAddNewInvoice() {
-    this._show(".page.addNewInvoice");
+    Utils.show(".page.addNewInvoice");
   }
 
   /**
-   * Show element by assigning class 'visible' with visibility: visible and remove class 'hidden'
-   * @param {string} selector element selector
-   * @private
+   * Hide main page
    */
-  _show(selector) {
-    const element = document.querySelector(selector);
-    if (element || element instanceof HTMLElement) {
-      element.classList.remove("hidden");
-      element.classList.add("visible");
-    } else throw Error("element must be HTMLElement");
+  hidePageMain() {
+    Utils.hide(".page.main");
   }
 
   /**
-   * Hide element by assigning class 'hidden' with visibility: hidden and remove class 'visible'
-   * @param {string} selector element selector
-   * @private
+   * Hide page with form for adding a new invoice
    */
-  _hide(selector) {
-    const element = document.querySelector(selector);
-    if (element || element instanceof HTMLElement) {
-      element.classList.remove("visible");
-      element.classList.add("hidden");
-    } else throw Error("element must be HTMLElement");
-  }
-
-  /**
-   * Enable element by assigning class 'enabled' with display: block and remove class 'disabled'
-   * @param {string} selector element selector
-   * @private
-   */
-  _enable(selector) {
-    const element = document.querySelector(selector);
-    if (element || element instanceof HTMLElement) {
-      element.classList.remove("disabled");
-      element.classList.add("enabled");
-    } else throw Error("element must be HTMLElement");
-  }
-
-  /**
-   * Disable element by assigning class 'disabled' with display: none and remove class 'enabled'
-   * @param {string} selector element selector
-   * @private
-   */
-  _disable(selector) {
-    const element = document.querySelector(selector);
-    if (element || element instanceof HTMLElement) {
-      element.classList.remove("enabled");
-      element.classList.add("disabled");
-    } else throw Error("element must be HTMLElement");
+  hidePageAddNewInvoice() {
+    Utils.hide(".page.addNewInvoice");
   }
 }
