@@ -54,8 +54,13 @@ export default class extends Utils {
         row.parentElement.removeChild(row);
         break;
 
+      case "Add new":
+
+        break;
+
       default:
       }
     }
   }
 }
+// getLastInvoiceNumber

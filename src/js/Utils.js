@@ -119,4 +119,14 @@ export default class {
   isObject(value) {
     return value && typeof value === "object" && value.constructor === Object;
   }
+
+  /**
+   * Format invoice number to template "INV-XXXXXX" with fixed length of digital part
+   * @param {number} invoiceNumber invoice number
+   * @returns {string} formattedInvoiceNumber formatted invoice number
+   */
+  formatInvoiceNumber(invoiceNumber) {
+    // eslint-disable-next-line no-bitwise
+    return (`INV-000000${(invoiceNumber >>> 0)}`).substr(-6);
+  }
 }

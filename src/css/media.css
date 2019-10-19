@@ -7,7 +7,7 @@
 		font-size: calc(.4em + .8vw);
 	}
 
-	.content {
+	.page {
 		margin: .5em 1.5em;
 		display: flex;
 		flex-direction: column;
@@ -211,7 +211,7 @@
 		/*line-height: 1.25em;*/
 	}
 
-	.content {
+	.page {
 		margin: .2em .5em;
 		display: flex;
 		flex-direction: column;
