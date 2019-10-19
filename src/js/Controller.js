@@ -31,8 +31,7 @@ export default class extends Utils {
    */
   _addEventListeners() {
     window.addEventListener("load", async () => {
-      await this.iModel
-      .downloadInvoices()
+      await this.iModel.downloadInvoices()
       .then(() => this.iView.renderPageMain(this.iModel.invoices))
       .then(this.iView.showPageMain);
     });
@@ -46,19 +45,55 @@ export default class extends Utils {
    */
   onUserAction(event) {
     const element = event.target;
+    let formData = {};
+
     if (element.tagName === "INPUT" && element.type === "button") {
-      switch (element.value) {
-      case "Remove":
-        // eslint-disable-next-line no-case-declarations
-        const row = element.closest(".tableRow");
-        this.iModel.removeInvoice(row.id);
-        row.parentElement.removeChild(row);
+      switch (element.dataset.action) {
+      case "Add new":
+        this.iView.renderPageAddEditInvoice("Create Invoice", this.iModel.getLastInvoiceNumber() + 1);
+        this.iView.showPageAddEditInvoice();
+        this.iView.hidePageMain();
         break;
 
-      case "Add new":
-        this.iView.renderPageAddNewInvoice(this.iModel.getLastInvoiceNumber());
-        this.iView.showPageAddNewInvoice();
+      case "Edit":
+        this.iView.showEditInvoice(element);
         this.iView.hidePageMain();
+        break;
+
+      case "Remove":
+        this.iModel.removeInvoice(this.iView.getRowId(element));
+        this.iView.deleteRow(element);
+        break;
+
+      case "Save":
+        formData = this.iView.getFormData(element);
+        if (formData) {
+          // make update if formData.number exists in DB or create new invoice
+          this.iModel.invoices.forEach(row => {
+            if (row.number === formData.number) formData.id = row.id;
+          });
+
+          // update invoice
+          if (formData.id) {
+            this.iModel.updateInvoice(formData)
+            .then(() => this.iModel.downloadInvoices())
+            .then(() => {
+              this.iView.renderPageMain(this.iModel.invoices);
+              this.iView.hidePageAddNewInvoice();
+              this.iView.showPageMain();
+            });
+          } else {
+            // create new invoice
+            formData.id = this.getHash(JSON.stringify(formData));
+            this.iModel.addInvoice(formData)
+            .then(() => this.iModel.downloadInvoices())
+            .then(() => {
+              this.iView.renderPageMain(this.iModel.invoices);
+              this.iView.hidePageAddNewInvoice();
+              this.iView.showPageMain();
+            });
+          }
+        }
         break;
 
       default:
@@ -66,4 +101,3 @@ export default class extends Utils {
     }
   }
 }
-// getLastInvoiceNumber

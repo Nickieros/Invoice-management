@@ -4,7 +4,6 @@ import Utils from "./Utils.js";
  * Class View
  */
 export default class extends Utils {
-  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
 
@@ -19,6 +18,9 @@ export default class extends Utils {
    * @param {Array.<{id: string, number: number, date_created: string, date_supplied: string, comment: string}>} invoices invoices Array
    */
   renderPageMain(invoices) {
+    // delete old page
+    if (document.querySelector(".page.main")) Utils.deleteElement(".page.main");
+
     const mainPage = document.createElement("div");
     mainPage.className = "page main hidden";
 
@@ -31,18 +33,25 @@ export default class extends Utils {
   }
 
   /**
-   * Add to document a page with a form for adding a new invoice
-   * @param {number} lastInvoiceNumber - last invoice number
+   * Add to document a page with a form for adding a new invoice or editing invoice
+   * @param {string} header header text of page
+   * @param {string} invoiceDate invoice date
+   * @param {string} supplyDate supply date
+   * @param {string} comment comment
+   * @param {number} invoiceNumber - invoice number
    */
-  renderPageAddNewInvoice(lastInvoiceNumber) {
-    const addNewInvoicePage = document.createElement("div");
-    addNewInvoicePage.className = "page addNewInvoice hidden";
+  renderPageAddEditInvoice(header, invoiceNumber, invoiceDate = "", supplyDate = "", comment = "") {
+    // delete old page
+    if (document.querySelector(".page.addEditInvoice")) Utils.deleteElement(".page.addEditInvoice");
 
-    addNewInvoicePage.innerHTML = `${this
-    ._createHtmlHeader("Create Invoice")}${this
-    ._createHtmlAddNewInvoiceFormPanel(lastInvoiceNumber)}`;
+    const addEditInvoicePage = document.createElement("div");
+    addEditInvoicePage.className = "page addEditInvoice hidden";
 
-    document.body.appendChild(addNewInvoicePage);
+    addEditInvoicePage.innerHTML = `${this
+    ._createHtmlHeader(header)}${this
+    ._createHtmlAddEditInvoiceFormPanel(invoiceNumber, invoiceDate, supplyDate, comment)}`;
+
+    document.body.appendChild(addEditInvoicePage);
   }
 
   /**
@@ -68,7 +77,7 @@ export default class extends Utils {
     <div class="panel actions">
         <p class="section">Actions</p>
         <div class="buttons">
-            <input type="button" value="Add new">
+            <input type="button" value="Add new" data-action="Add new">
         </div>
     </div>`;
   }
@@ -97,12 +106,12 @@ export default class extends Utils {
       htmlBuffer += `
           <div class="tableRow" id="${invoicesArray[i].id}">
             <div data-header="Create:&nbsp;">${invoicesArray[i].date_created}</div>
-            <div data-header="No:&nbsp;">INV-${this.formatInvoiceNumber(invoicesArray[i].number)}</div>
+            <div data-header="No:&nbsp;">INV-${this._formatInvoiceNumber(invoicesArray[i].number)}</div>
             <div data-header="Supply:&nbsp;">${invoicesArray[i].date_supplied}</div>
             <div data-header="Comment:&nbsp;">${invoicesArray[i].comment === undefined ? "" : invoicesArray[i].comment}</div>
             <div data-header="Actions:&nbsp;" class="buttons">
-              <input type="button" value="Edit">
-              <input type="button" value="Remove">
+              <input type="button" value="Edit" data-action="Edit">
+              <input type="button" value="Remove" data-action="Remove">
             </div>
           </div>`;
       /* eslint-enable no-underscore-dangle, no-bitwise */
@@ -117,14 +126,68 @@ export default class extends Utils {
 
   /**
    * Returns HTML code of the add new invoice form panel div element
-   * @param {number} lastInvoiceNumber last invoice number
+   * @param {number} invoiceNumber invoice number
+   * @param {string} invoiceDate invoice date
+   * @param {string} supplyDate supply date
+   * @param {string} comment comment
    * @returns {string} htmlDiv HTML code of the add new invoice form panel div element
    * @private
    */
-  _createHtmlAddNewInvoiceFormPanel(lastInvoiceNumber) {
+  _createHtmlAddEditInvoiceFormPanel(invoiceNumber, invoiceDate, supplyDate, comment) {
     return `
-    <div class="panel addNewInvoiceForm">${lastInvoiceNumber}
-    </div>`;
+        <div class="panel addEditInvoiceForm">
+            <form class="addEditInvoice-form">
+                <div class="addEditInvoice-form__wrapper">
+                    <div class="addEditInvoice-form__wrapper__number">
+                        <label>Number:<br>
+                        <div class="addEditInvoice-form__input__invoiceNumber__prefix">INV-</div>
+                        <input
+                            type="number"
+                            name="number"
+                            value="${invoiceNumber}"
+                            min="1"
+                            max="999999" 
+                            class="addEditInvoice-form__input__invoiceNumber">
+                        <div class="addEditInvoice-form__input__explanation">* natural number<br>up to 999 999</div>
+                        </label>
+                    </div>
+                    <div class="addEditInvoice-form__wrapper__invoiceDate">
+                        <label>Invoice Date:<br>
+                        <input
+                          type="text"
+                          name="invoiceDate"
+                          placeholder='${invoiceDate || "select date"}'
+                          value='${invoiceDate}'
+                          onfocusin="this.type='date'" onfocusout="this.type='text'"  
+                          onchange="this.placeholder=this.value"
+                          class="addEditInvoice-form__input__invoiceDate">
+                        </label>
+                    </div>
+                    <div class="addEditInvoice-form__wrapper__supplyDate">
+                        <label>Supply Date:<br>
+                        <input type="text"
+                          name="supplyDate"
+                          placeholder='${supplyDate || "select date"}'
+                          value='${supplyDate}'
+                          onfocusin="this.type='date'" onfocusout="this.type='text'"
+                          onchange="this.placeholder=this.value"
+                          class="addEditInvoice-form__input__supplyDate">
+                        </label>
+                    </div>
+                    <div class="addEditInvoice-form__wrapper__comment flex-break">
+                        <label>Comment:<br>
+                        <textarea
+                            name="comment"
+                            class="addEditInvoice-form__input__comment"
+                            rows="2"
+                            placeholder="add comment here">${comment}</textarea><br>
+                        <span class="addEditInvoice-form__input__explanation">* сomment length must be less than 160 characters</span></label>
+                    </div>
+                </div>
+                <div class="addEditInvoice-form__message__error"></div>
+                <input type="button" name="Save" value="Save" data-action="Save" class="addEditInvoice-form__input__saveButton">
+            </form>
+        </div>`;
   }
 
   /**
@@ -138,8 +201,106 @@ export default class extends Utils {
   /**
    * Show page with form for adding a new invoice
    */
-  showPageAddNewInvoice() {
-    Utils.show(".page.addNewInvoice");
+  showPageAddEditInvoice() {
+    Utils.show(".page.addEditInvoice");
+  }
+
+  /**
+   * Returns row id of element or throws error
+   * @param {HTMLElement} element HTMLElement in css-table row
+   * @returns {string}
+   */
+  getRowId(element) {
+    const rowElement = element.closest(".tableRow");
+    if (!rowElement) throw Error(`View -> getRowId: element '${element.tagName} ${element.type} "${element.value}"' has no parent node with ".tableRow" selector`);
+    return rowElement.id;
+  }
+
+  /**
+   * Deletes row of the given element
+   * @param {HTMLElement} element HTMLElement in css-table row
+   */
+  deleteRow(element) {
+    const row = document.getElementById(this.getRowId(element));
+    row.parentElement.removeChild(row);
+  }
+
+  /**
+   * Validates form data and returns it as object
+   * @param {HTMLElement} element HTMLElement - usually its a button in form area
+   * @returns {boolean|{number: number, date_created: string, date_supplied: string, comment: string}}
+   */
+  getFormData(element) {
+    const HTMLForm = element.closest("form");
+    const errorMessageElement = document.querySelector(".addEditInvoice-form__message__error");
+
+    const invoiceNumber =  parseInt(HTMLForm.number.value);
+    if (this.isNumber(invoiceNumber) && invoiceNumber > 0 && invoiceNumber < 1000000) {
+      HTMLForm.number.classList.remove("error-input");
+    } else {
+      HTMLForm.number.classList.add("error-input");
+      errorMessageElement.innerHTML = "invalid number field: natural number up to 999 999 was expected";
+      return false;
+    }
+
+    const invoiceDate =  HTMLForm.invoiceDate.value;
+    if (Date.parse(invoiceDate)) {
+      HTMLForm.invoiceDate.classList.remove("error-input");
+    } else {
+      HTMLForm.invoiceDate.classList.add("error-input");
+      errorMessageElement.innerHTML = "invoice date is invalid. Format: YYYY-MM-DD";
+      return false;
+    }
+
+    const supplyDate =  HTMLForm.supplyDate.value;
+    if (Date.parse(supplyDate)) {
+      HTMLForm.supplyDate.classList.remove("error-input");
+    } else {
+      HTMLForm.supplyDate.classList.add("error-input");
+      errorMessageElement.innerHTML = "supply date is invalid. Format: YYYY-MM-DD";
+      return false;
+    }
+
+    const commentTxt =  HTMLForm.comment.value;
+    if (commentTxt.length < 160) {
+      HTMLForm.comment.classList.remove("error-input");
+    } else {
+      HTMLForm.comment.classList.add("error-input");
+      errorMessageElement.innerHTML = "сomment length must be less than 160 characters";
+      return false;
+    }
+
+    return {
+      number: invoiceNumber,
+      date_created: invoiceDate,
+      date_supplied: supplyDate,
+      comment: commentTxt,
+    };
+  }
+
+  /**
+   * Gets invoice data, render the "Edit invoice" page and shows it with filled invoice information
+   * @param {HTMLElement} buttonEdit
+   */
+  showEditInvoice(buttonEdit) {
+    let elementPointer = buttonEdit.closest(".tableRow").firstElementChild;
+    const invoiceDate = elementPointer.innerText;
+    elementPointer = elementPointer.nextElementSibling;
+    const invoiceNumber = parseInt(elementPointer.innerText.substr(4));
+    elementPointer = elementPointer.nextElementSibling;
+    const supplyDate = elementPointer.innerText;
+    elementPointer = elementPointer.nextElementSibling;
+    const comment = elementPointer.innerText;
+
+    this.renderPageAddEditInvoice(
+      "Edit Invoice",
+      invoiceNumber,
+      invoiceDate,
+      supplyDate,
+      comment,
+    );
+
+    this.showPageAddEditInvoice();
   }
 
   /**
@@ -153,6 +314,16 @@ export default class extends Utils {
    * Hide page with form for adding a new invoice
    */
   hidePageAddNewInvoice() {
-    Utils.hide(".page.addNewInvoice");
+    Utils.hide(".page.addEditInvoice");
+  }
+
+  /**
+   * Format invoice number to template "INV-XXXXXX" with fixed length of digital part
+   * @param {number} invoiceNumber invoice number
+   * @returns {string} formattedInvoiceNumber formatted invoice number
+   */
+  _formatInvoiceNumber(invoiceNumber) {
+    // eslint-disable-next-line no-bitwise
+    return (`INV-000000${(invoiceNumber >>> 0)}`).substr(-6);
   }
 }

@@ -33,7 +33,7 @@ export default class extends Utils {
         mode: "cors",
       },
     )
-    .then(response => !this._validateResponse(response) || response.json())
+    .then(response => !this.validateResponse(response) || response.json())
     .then(json => { this.invoices = Object.values(JSON.parse(JSON.stringify(json))); })
     .then(() => {
       // invoices validation
@@ -61,7 +61,7 @@ export default class extends Utils {
         {id: string, number: number, date_created: string, date_supplied: string}`);
       }
     })
-    .catch(error => console.error("Utils -> downloadInvoices: ", error.message));
+    .catch(error => console.error("Model -> downloadInvoices: ", error.message));
   }
 
   /**
@@ -71,9 +71,14 @@ export default class extends Utils {
    */
   async removeInvoice(invoiceId) {
     let invoiceArrayIndex = "";
+
+    // find array index to remove element
     this.invoices.forEach((row, index) => { if (row.id === invoiceId) invoiceArrayIndex = index; });
+
+    // remove element from local data storage
     this.invoices.splice(invoiceArrayIndex, 1);
 
+    // remove element from remote data storage
     await fetch(
       `${this.DATA_SOURCE_NAME}/invoices/${invoiceId}`,
       {
@@ -82,32 +87,72 @@ export default class extends Utils {
         mode: "cors",
       },
     )
-    .then(response => this._validateResponse(response))
-    .catch(error => console.error("Utils -> removeInvoice: ", error.message));
-  }
-
-  /**
-   * Validate fetch response from the server. Returns true if validation is successful, else throw error
-   * @param {Response} response fetch response from server
-   * @private
-   */
-  _validateResponse(response) {
-    if (!response.ok) { // Client (400-500) and server (500-600) errors responses
-      throw Error(`_validateResponse() found client error: ${response.status} ${response.statusText} when fetching ${response.url}`);
-    }
-    return true;
+    .then(response => this.validateResponse(response))
+    .catch(error => console.error("Model -> removeInvoice: ", error.message));
   }
 
   /**
    * Returns last invoice number
+   * Increased by 1, it will be offered to User as new invoice number in "Add New Invoice" page
    * @returns {string} lastInvoiceNumber
    */
   getLastInvoiceNumber() {
-    if (!this.invoices.length) throw Error("invoices is absent or not downloaded yet");
+    if (!this.invoices.length) {
+      console.error("invoices is absent or not downloaded yet");
+      return 0;
+    }
+
     let lastInvoiceNumber = 0;
 
+    // search biggest number
     this.invoices.forEach(row => { if (lastInvoiceNumber < row.number) lastInvoiceNumber = row.number; });
 
     return lastInvoiceNumber;
+  }
+
+  /**
+   * Add new invoice to local and remote data storage
+   * @param invoice
+   * @returns {Promise<void>}
+   */
+  async addInvoice(invoice) {
+    this.invoices.push(invoice);
+
+    await fetch(
+      `${this.DATA_SOURCE_NAME}/invoices`,
+      {
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(invoice),
+      },
+    )
+    .then(response => this.validateResponse(response))
+    .catch(error => console.error("Model -> removeInvoice: ", error.message));
+  }
+
+  /**
+   * Update invoice in remote data storage and refresh local
+   * @param invoice
+   * @returns {Promise<void>}
+   */
+  async updateInvoice(invoice) {
+    await fetch(
+      `${this.DATA_SOURCE_NAME}/invoices/${invoice.id}`,
+      {
+        headers: { "Content-Type": "application/json" },
+        // use the PATCH method to optimize interaction with resource,
+        // cos it can updates part of resource instead of the PUT method,
+        // which updates the entire resource :-o
+        method: "PUT",
+        mode: "cors",
+        body: JSON.stringify(invoice),
+      },
+    )
+    .then(response => this.validateResponse(response))
+    .catch(error => console.error("Model -> updateInvoice: ", error.message));
+
+    // refresh local data storage
+    this.downloadInvoices();
   }
 }

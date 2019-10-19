@@ -26,61 +26,6 @@ export default class {
   }
 
   /**
-   * Установка свойства в CSS-селекторе.
-   * Работает только с первым набором styleSheet, @media
-   * @param {string} toCssSelector
-   * @param {string} cssProperty
-   * @param {string} cssValue
-   */
-  setCssRule(toCssSelector, cssProperty, cssValue) {
-    const css = Array.from(document.styleSheets).find(elem => elem.href);
-    const { cssRules } = (css.cssRules || css.rules)[0];
-
-    Object.keys(cssRules).forEach(cssRule => {
-      if (cssRules[cssRule].selectorText === toCssSelector) {
-        cssRules[cssRule].style.setProperty(cssProperty, cssValue);
-      }
-    });
-  }
-
-  /**
-   * Получение свойства из CSS-селектора.
-   * Работает только с первым набором styleSheet, @media
-   * @param {string} fromCssSelector
-   * @param {string} cssProperty
-   */
-  getCssProperty(fromCssSelector, cssProperty) {
-    const css = Array.from(document.styleSheets).find(elem => elem.href);
-    const { cssRules } = (css.cssRules || css.rules)[0];
-    let propertyValue = "";
-
-    Object.keys(cssRules).forEach(cssRule => {
-      if (cssRules[cssRule].selectorText === fromCssSelector) {
-        propertyValue = cssRules[cssRule].style.getPropertyValue(cssProperty);
-      }
-    });
-    return propertyValue;
-  }
-
-  /**
-   * Получение всех правил из CSS-селектора.
-   * Работает только с первым набором styleSheet, @media
-   * @param {string} fromCssSelector
-   */
-  getCssRules(fromCssSelector) {
-    const css = Array.from(document.styleSheets).find(elem => elem.href);
-    const { cssRules } = (css.cssRules || css.rules)[0];
-    let propertyValue = "";
-
-    Object.keys(cssRules).forEach(cssRule => {
-      if (cssRules[cssRule].selectorText === fromCssSelector) {
-        propertyValue = cssRules[cssRule].style.cssText;
-      }
-    });
-    return propertyValue;
-  }
-
-  /**
    * Returns true if value type is String
    * @param {string} value
    * @returns {boolean}
@@ -121,13 +66,12 @@ export default class {
   }
 
   /**
-   * Format invoice number to template "INV-XXXXXX" with fixed length of digital part
-   * @param {number} invoiceNumber invoice number
-   * @returns {string} formattedInvoiceNumber formatted invoice number
+   * Returns true if value type can convert to date
+   * @param {string} value
+   * @returns {boolean}
    */
-  formatInvoiceNumber(invoiceNumber) {
-    // eslint-disable-next-line no-bitwise
-    return (`INV-000000${(invoiceNumber >>> 0)}`).substr(-6);
+  isDate(value) {
+    return !!Date.parse(value);
   }
 
   /**
@@ -155,6 +99,15 @@ export default class {
   }
 
   /**
+   * Delete HTMLElement with a given selector
+   * @param {string} selector element selector
+   */
+  static deleteElement(selector) {
+    const element = document.querySelector(selector);
+    element.parentElement.removeChild(element);
+  }
+
+  /**
    * Enable element by assigning class 'enabled' with display: block and remove class 'disabled'
    * @param {string} selector element selector
    */
@@ -176,5 +129,16 @@ export default class {
       element.classList.remove("enabled");
       element.classList.add("disabled");
     } else throw Error("element not found");
+  }
+
+  /**
+   * Validate fetch response from the server. Returns true if validation is successful, else throw error
+   * @param {Response} response fetch response from server
+   */
+  validateResponse(response) {
+    if (!response.ok) { // Client (400-500) and server (500-600) errors responses
+      throw Error(`_validateResponse() found client error: ${response.status} ${response.statusText} when fetching ${response.url}`);
+    }
+    return true;
   }
 }
