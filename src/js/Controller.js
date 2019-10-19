@@ -33,7 +33,7 @@ export default class extends Utils {
     window.addEventListener("load", async () => {
       await this.iModel
       .downloadInvoices()
-      .then(() => this.iView.renderMainPage(this.iModel.invoices));
+      .then(() => this.iView.renderPageMain(this.iModel.invoices));
     });
 
     window.addEventListener("click", this.onUserAction.bind(this));

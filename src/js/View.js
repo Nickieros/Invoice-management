@@ -13,29 +13,29 @@ export default class extends Utils {
    * Add main page to document
    * @param {Array.<{id: string, number: number, date_created: string, date_supplied: string, comment: string}>} invoices invoices Array
    */
-  renderMainPage(invoices) {
+  renderPageMain(invoices) {
     const mainPage = document.createElement("div");
-    mainPage.className = "main page";
+    mainPage.className = "page main";
 
     mainPage.innerHTML = `${this
-    ._createHeaderHtml("Invoices")}${this
-    ._createActionsPanelHtml()}${this
-    ._createInvoicesPanelHtml(invoices)}`;
+    ._createHtmlHeader("Invoices")}${this
+    ._createHtmlActionsPanel()}${this
+    ._createHtmlInvoicesPanel(invoices)}`;
 
     document.body.appendChild(mainPage);
   }
 
   /**
-   * Add new invoice form page to document
+   * Add to document a page with a form for adding a new invoice
    * @param {number} lastInvoiceNumber - last invoice number
    */
-  renderAddNewInvoicePage(lastInvoiceNumber) {
+  renderPageAddNewInvoice(lastInvoiceNumber) {
     const addNewInvoicePage = document.createElement("div");
-    addNewInvoicePage.className = "addNewInvoice page";
+    addNewInvoicePage.className = "page addNewInvoice";
 
     addNewInvoicePage.innerHTML = `${this
-    ._createHeaderHtml("Create Invoice")}${this
-    ._createNewInvoiceFormPanelHtml(lastInvoiceNumber)}`;
+    ._createHtmlHeader("Create Invoice")}${this
+    ._createHtmlAddNewInvoiceFormPanel(lastInvoiceNumber)}`;
 
     document.body.appendChild(addNewInvoicePage);
   }
@@ -46,7 +46,7 @@ export default class extends Utils {
    * @returns {string} htmlDiv HTML code of the header's div element
    * @private
    */
-  _createHeaderHtml(headerText) {
+  _createHtmlHeader(headerText) {
     return `
       <div class="header">
           <p>${headerText}</p>
@@ -58,9 +58,9 @@ export default class extends Utils {
    * @returns {string} htmlDiv HTML code of the actions panel div element
    * @private
    */
-  _createActionsPanelHtml() {
+  _createHtmlActionsPanel() {
     return `
-    <div class="actions panel">
+    <div class="panel actions">
         <p class="section">Actions</p>
         <div class="buttons">
             <input type="button" value="Add new">
@@ -74,9 +74,9 @@ export default class extends Utils {
    * @returns {string} htmlDiv HTML code of the invoices panel div element
    * @private
    */
-  _createInvoicesPanelHtml(invoicesArray) {
+  _createHtmlInvoicesPanel(invoicesArray) {
     let htmlBuffer = `
-      <div class="invoices panel">
+      <div class="panel invoices">
         <p class="section">Invoices</p>
         <div class="table">
           <div class="tableRow">
@@ -111,14 +111,80 @@ export default class extends Utils {
   }
 
   /**
-   * Returns HTML code of the new invoice form panel div element
+   * Returns HTML code of the add new invoice form panel div element
    * @param {number} lastInvoiceNumber last invoice number
-   * @returns {string} htmlDiv HTML code of the new invoice form panel div element
+   * @returns {string} htmlDiv HTML code of the add new invoice form panel div element
    * @private
    */
-  _createNewInvoiceFormPanelHtml(lastInvoiceNumber) {
+  _createHtmlAddNewInvoiceFormPanel(lastInvoiceNumber) {
     return `
-    <div class="newInvoiceForm panel">${lastInvoiceNumber}
+    <div class="panel addNewInvoiceForm">${lastInvoiceNumber}
     </div>`;
+  }
+
+  /**
+   * Show main page
+   */
+  showPageMain() {
+    this._show(".page.main");
+  }
+
+  /**
+   * Show page with form for adding a new invoice
+   */
+  showPageAddNewInvoice() {
+    this._show(".page.addNewInvoice");
+  }
+
+  /**
+   * Show element by assigning class 'visible' with visibility: visible and remove class 'hidden'
+   * @param {string} selector element selector
+   * @private
+   */
+  _show(selector) {
+    const element = document.querySelector(selector);
+    if (element || element instanceof HTMLElement) {
+      element.classList.remove("hidden");
+      element.classList.add("visible");
+    } else throw Error("element must be HTMLElement");
+  }
+
+  /**
+   * Hide element by assigning class 'hidden' with visibility: hidden and remove class 'visible'
+   * @param {string} selector element selector
+   * @private
+   */
+  _hide(selector) {
+    const element = document.querySelector(selector);
+    if (element || element instanceof HTMLElement) {
+      element.classList.remove("visible");
+      element.classList.add("hidden");
+    } else throw Error("element must be HTMLElement");
+  }
+
+  /**
+   * Enable element by assigning class 'enabled' with display: block and remove class 'disabled'
+   * @param {string} selector element selector
+   * @private
+   */
+  _enable(selector) {
+    const element = document.querySelector(selector);
+    if (element || element instanceof HTMLElement) {
+      element.classList.remove("disabled");
+      element.classList.add("enabled");
+    } else throw Error("element must be HTMLElement");
+  }
+
+  /**
+   * Disable element by assigning class 'disabled' with display: none and remove class 'enabled'
+   * @param {string} selector element selector
+   * @private
+   */
+  _disable(selector) {
+    const element = document.querySelector(selector);
+    if (element || element instanceof HTMLElement) {
+      element.classList.remove("enabled");
+      element.classList.add("disabled");
+    } else throw Error("element must be HTMLElement");
   }
 }

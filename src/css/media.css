@@ -126,6 +126,22 @@
 	input[type="button"] {
 		cursor: pointer;
 	}
+
+	.hidden {
+		visibility: hidden;
+	}
+
+	.visible {
+		visibility: visible;
+	}
+
+	.enabled {
+		display: block;
+	}
+
+	.disabled {
+		display: none;
+	}
 }
 
 @media (max-aspect-ratio: 1/1 ) {
