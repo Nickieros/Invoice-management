@@ -49,7 +49,7 @@ export default class extends Utils {
             HTMLForm.invoiceDate.classList.remove("error-input");
         } else {
             HTMLForm.invoiceDate.classList.add("error-input");
-            errorMessageElement.innerHTML = "invoice date is invalid. Format: YYYY-MM-DD";
+            errorMessageElement.innerHTML = "invoice date is invalid or does not match pattern 'YYYY-MM-DD'";
             return false;
         }
 
@@ -58,7 +58,15 @@ export default class extends Utils {
             HTMLForm.supplyDate.classList.remove("error-input");
         } else {
             HTMLForm.supplyDate.classList.add("error-input");
-            errorMessageElement.innerHTML = "supply date is invalid. Format: YYYY-MM-DD";
+            errorMessageElement.innerHTML = "supply date is invalid or does not match pattern 'YYYY-MM-DD'";
+            return false;
+        }
+
+        if (supplyDate >= invoiceDate) {
+            HTMLForm.supplyDate.classList.remove("error-input");
+        } else {
+            HTMLForm.supplyDate.classList.add("error-input");
+            errorMessageElement.innerHTML = "supply date can't be earlier than invoice date";
             return false;
         }
 
@@ -191,8 +199,8 @@ export default class extends Utils {
                                     tabindex="2"
                                     type="date"
                                     name="invoiceDate"
-                                    placeholder="${ invoiceDate || "select date"}"
-                                    value="${ invoiceDate }"
+                                    placeholder="YYYY-MM-DD"
+                                    value="${ invoiceDate || (new Date()).toISOString().slice(0, 10)}"
                                     required 
                                     pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
                                     class="addEditInvoice-form__input__invoiceDate">
@@ -204,7 +212,7 @@ export default class extends Utils {
                                 tabindex="3"
                                 type="date"
                                 name="supplyDate"
-                                placeholder="${ supplyDate || "select date"}"
+                                placeholder="YYYY-MM-DD"
                                 value="${ supplyDate }"
                                 required 
                                 pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"

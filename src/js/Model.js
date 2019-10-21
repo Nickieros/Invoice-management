@@ -43,7 +43,7 @@ export default class extends Utils {
      * @returns {Promise.<Array.<{id: string, number: number, date_created: string, date_supplied: string, comment: string}>>} invoices
      */
     async downloadInvoices() {
-        await fetch(`${this.DATA_SOURCE_NAME}/invoices`, {
+        await fetch(`${this.DATA_SOURCE_NAME}/invoices?_sort=date_created&_order=desc`, {
             headers: { "Content-Type": "application/x-www-form-urlencoded;" },
             method: "GET",
             mode: "cors",
