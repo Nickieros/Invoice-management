@@ -69,7 +69,7 @@ export default class extends Utils {
 
                 case "Remove":
                     // don't use await cos stop don't needed, let it works in background
-                    // this.iModel.removeInvoice(this.iView.getRowId(element));
+                    this.iModel.removeInvoice(this.iView.getRowId(element));
                     this.iView.deleteRow(element);
                     break;
 
