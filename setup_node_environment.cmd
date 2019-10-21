@@ -3,6 +3,10 @@ echo {"name": "Invoice_management","version": "1.0.0","description": "Invoice ma
 call npm install eslint eslint-config-airbnb --save-dev
 call node node_modules\eslint\bin\eslint.js --init
 
+call npm install prettier --save-dev
+
+call npm install eslint-config-prettier eslint-plugin-prettier
+
 call npm install webpack webpack-cli webpack-dev-server --save-dev
 
 call npm install @babel/core @babel/node babel-polyfill babel-loader --save-dev
@@ -11,7 +15,6 @@ echo {"presets": ["@babel/preset-env"]} > .babelrc
 
 call npm install json-server -g
 
-call npm install prettier --save-dev
 
 call npm install stylelint --save-dev
 call npm install stylelint-config-recommended --save-dev

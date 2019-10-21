@@ -9,7 +9,10 @@
   "author": "Dmitry Bordun",
   "license": "ISC",
   "eslint": "eslint --ignore-path .gitignore .",
-  "dependencies": {},
+  "dependencies": {
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-prettier": "^3.1.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",

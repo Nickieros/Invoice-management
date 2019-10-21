@@ -18,8 +18,8 @@
   }
 
   .panel {
-    margin: 1.14em 0;
-    padding: 0.45em 1.2em 1.35em 1.2em;
+    margin: 1.2em 0 1em 0;
+    padding: 0.45em 1.2em 1.5em 1.2em;
     background-color: white;
     border: #e4e8eb solid 0.1em;
     border-radius: 0.15em/.15em;
@@ -46,7 +46,7 @@
   .section {
     margin: 0;
     font-weight: bold;
-    padding: 1.2em 0 0.75em 0;
+    padding: 1.2em 0 0.6em 0;
     font-size: 1em;
   }
 
@@ -80,7 +80,7 @@
   .table div {
     font-size: 0.9em;
     color: black;
-    padding: 1.4em 0.5em 1.2em 1.4em;
+    padding: 1.7em 0.5em 1.6em 1.4em;
   }
 
   .tableRow {
@@ -119,16 +119,21 @@
     cursor: pointer;
   }
 
+  .addEditInvoice-form {
+    padding: .2em;
+  }
+
   .addEditInvoice-form__input__invoiceNumber,
   .addEditInvoice-form__input__invoiceDate,
   .addEditInvoice-form__input__supplyDate,
-  input[type="date"],
+  .addEditInvoice-form__input__date,
   .addEditInvoice-form__input__comment {
     font-family: sans-serif;
     font-size: 100%;
     border: #e4e8eb solid 0.1em;
-    margin: .75em 2em  2.5em 0;
-    padding-left: .5em;
+    border-radius: .2em/.2em;
+    margin: .75em 2em 2.5em 0;
+    padding-left: .3em;
     line-height: 1.5em;
     letter-spacing: 0;
     vertical-align: top;
@@ -139,17 +144,18 @@
 
   .addEditInvoice-form__input__invoiceDate,
   .addEditInvoice-form__input__supplyDate {
-    width: 9em;
+    width: 8.7em;
   }
 
   .addEditInvoice-form__input__comment {
-    margin-bottom: .5em;
+    margin-bottom: 0;
   }
 
   .addEditInvoice-form__input__explanation {
     font-size: 80%;
+    display: block;
     color: #787e8a;
-    margin: .5em 1em 1.5em 0;
+    margin: .5em 0 1.5em 0;
     text-align: center;
   }
 
@@ -179,7 +185,7 @@
   }
 
   .tableRow:first-child div {
-    padding-bottom: 1.2em;
+    padding-bottom: 1.3em;
     color: #787e8a;
     font-size: 1em;
   }
@@ -191,7 +197,7 @@
   .addEditInvoice-form__input__invoiceNumber__prefix {
     font-size: 100%;
     display: inline-block;
-    margin-top: .9em;
+    margin-top: .85em;
     line-height: 1.5em;
   }
 
@@ -201,7 +207,7 @@
   }
 
   label {
-    font-size: 1em;
+    font-size: 1.1em;
   }
 
   .flex-break {
@@ -212,11 +218,12 @@
     font-size: .9em;
     border: #e4e8eb solid 0.1em;
     padding: 1.2em;
-    padding-top: 2em;
+    padding-top: 2.7em;
     margin-top: .9em;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: space-between;
   }
 
   .addEditInvoice-form__input__saveButton {
@@ -234,12 +241,12 @@
   .hidden {
     overflow: hidden;
     height: 0;
-    transition: all .5s cubic-bezier(0, 1, 0.5, 1);
+    transition: all 1s cubic-bezier(0, 1, 0.5, 1), font-size 1s cubic-bezier(0, 1, 0.5, 1);
   }
 
   .visible {
     height: 100vh;
-    transition: all .5s cubic-bezier(0, 1, 0.5, 1);
+    transition: all 1s cubic-bezier(0, 1, 0.5, 1), font-size 1s cubic-bezier(0, 1, 0.5, 1);
   }
 
   .enabled {
@@ -256,7 +263,6 @@
       background: transparent;
     }
   }
-
 }
 
 @media (max-aspect-ratio: 3/4) {
@@ -303,7 +309,8 @@
   .buttons input {
     font-size: 1em;
     font-weight: normal;
-    padding: 0.2em 0.4em;
+    padding: 0.6em 0.8em;
+    margin-top: 0.5em;
     color: white;
     background-color: #4a74fe;
     border-radius: 0.2em/.2em;
@@ -311,7 +318,7 @@
   }
 
   .tableRow .buttons input {
-    padding: 0.2em 0.4em;
+    padding: 0.4em .8em;
   }
 
   .tableRow div {
@@ -360,6 +367,11 @@
     margin: .5em 0 1.5em 0;
   }
 
+  .addEditInvoice-form__input__invoiceDate,
+  .addEditInvoice-form__input__supplyDate {
+    width: 8em;
+  }
+
   .addEditInvoice-form__input__comment {
     margin-bottom: .5em;
   }
@@ -368,10 +380,11 @@
     font-size: 1em;
   }
 
-  input[type="number"] + div {
+  .addEditInvoice-form__input__explanation {
     font-size: 80%;
+    display: block;
     color: #787e8a;
-    margin: 0 1em 1.5em .3em;
+    margin: 0 0 1.5em 1.5em;
     text-align: center;
   }
 
@@ -414,15 +427,11 @@
     white-space: nowrap;
     line-height: 2em;
   }
-
-  .tableRow div:nth-child(4):before {
-    /*line-height: 1.25em;*/
-  }
 }
 
-@media (max-width: 374px) {
+@media (max-width: 359px) {
   body {
-    font-size: 6.5vw;
+    font-size: 6.5vw; /* 2.32 */
   }
 
   .addEditInvoice-form__wrapper {
@@ -433,8 +442,14 @@
   .addEditInvoice-form__input__invoiceDate,
   .addEditInvoice-form__input__supplyDate,
   input[type="date"],
+  input[type="number"],
   .addEditInvoice-form__input__comment {
     font-size: 80%;
   }
+
+  .addEditInvoice-form__input__explanation {
+    font-size: 60%;
+  }
 }
+
 
