@@ -28,7 +28,7 @@ export default class extends Utils {
 
     /**
      * Validates form data and returns it as object
-     * @param {HTMLElement} element HTMLElement - usually its a button in form area
+     * @param {HTMLElement|EventTarget} element HTMLElement|EventTarget - usually its a button in form area
      * @returns {boolean|{number: number, date_created: string, date_supplied: string, comment: string}}
      */
     getFormData(element) {
@@ -130,6 +130,13 @@ export default class extends Utils {
         Utils.show(".page.main");
         Utils.hide(".panelDummy");
         Utils.hide(".page.addEditInvoice");
+    }
+
+    /**
+     * Click on submit button when onSubmit event occurred
+     */
+    submitForm() {
+        document.querySelector(".addEditInvoice-form__input__saveButton").click();
     }
 
     /**

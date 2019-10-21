@@ -112,7 +112,7 @@ export default class extends Utils {
         }
 
         if (event.type === "submit") {
-            document.querySelector(".addEditInvoice-form__input__saveButton").click();
+            this.iView.submitForm();
         }
     }
 }
