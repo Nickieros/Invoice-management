@@ -8,7 +8,6 @@ Screenshot:
 Mobile view gallery in animated gif:
 ![Mobile view gallery in animated gif](readme_media/slideshow.gif "Mobile view gallery in animated gif")
 
-Mobile view gallery in video:
 ![Mobile view gallery in video](readme_media/slideshow.mp4 "Mobile view gallery in video")
 
 
