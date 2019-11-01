@@ -1,5 +1,10 @@
 # Invoice-management
-Invoice management
+Invoice-management:
+
+- create new invoice, edit, delete
+- desktop and mobile view
+- adaptive and responsive layout techniques
+- using RESTful API
 
 ![Screenshot](readme_media/screenshot.png "Screenshot")
 
