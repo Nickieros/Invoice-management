@@ -179,7 +179,7 @@ export default class extends Utils {
             <form class="addEditInvoice-form" onsubmit="return false;">
                 <div class="addEditInvoice-form__wrapper">
                     <div class="addEditInvoice-form__wrapper__number">
-                        <label>Number:<br>
+                        <div class="label">Number:<br>
                         <div class="addEditInvoice-form__input__invoiceNumber__prefix">INV-</div>
                         <input
                                 tabindex="1"
@@ -191,10 +191,10 @@ export default class extends Utils {
                                 required
                                 class="addEditInvoice-form__input__invoiceNumber"/>
                         <div class="addEditInvoice-form__input__explanation">* natural number<br>up to 999 999</div>
-                        </label>
+                        </div>
                     </div>
                     <div class="addEditInvoice-form__wrapper__invoiceDate">
-                        <label>Invoice Date:<br>
+                        <div class="label">Invoice Date:<br>
                             <input
                                     tabindex="2"
                                     type="date"
@@ -204,10 +204,10 @@ export default class extends Utils {
                                     required 
                                     pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
                                     class="addEditInvoice-form__input__invoiceDate">
-                        </label>
+                        </div>
                     </div>
                     <div class="addEditInvoice-form__wrapper__supplyDate">
-                        <label>Supply Date:<br>
+                        <div class="label">Supply Date:<br>
                         <input
                                 tabindex="3"
                                 type="date"
@@ -217,17 +217,17 @@ export default class extends Utils {
                                 required 
                                 pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
                                 class="addEditInvoice-form__input__supplyDate"/>
-                        </label>
+                        </div>
                     </div>
                     <div class="addEditInvoice-form__wrapper__comment flex-break">
-                        <label>Comment:<br>
+                        <div class="label">Comment:<br>
                         <textarea
                                 tabindex="4"
                                 name="comment"
                                 class="addEditInvoice-form__input__comment"
                                 rows="2"
                                 placeholder="add comment here">${ comment }</textarea><br>
-                        <span class="addEditInvoice-form__input__explanation">* сomment length must be no more than 160 characters</span></label>
+                        <span class="addEditInvoice-form__input__explanation">* сomment length must be no more than 160 characters</span></div>
                     </div>
                 </div>
                 <div class="addEditInvoice-form__message__error"></div>

@@ -1,5 +1,5 @@
 # Invoice-management
-Invoice management as a Test Assignment for Frontend Developer
+Invoice management
 
 ![Screenshot](readme_media/screenshot.png "Screenshot")
 

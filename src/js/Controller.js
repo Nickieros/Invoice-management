@@ -30,23 +30,24 @@ export default class extends Utils {
      * @private
      */
     _addEventListeners() {
-        window.addEventListener("load", () => {
-            this.iModel.downloadInvoices().then(() => this.iView.showPageMain(this.iModel.invoices));
-        });
+        window.addEventListener("load", () =>
+            this.iModel.downloadInvoices().then(() => this.iView.showPageMain(this.iModel.invoices))
+        );
 
-        window.addEventListener("click", this.onUserAction.bind(this));
+        window.addEventListener("click", this._onUserAction.bind(this));
 
-        window.addEventListener("submit", this.onUserAction.bind(this));
+        window.addEventListener("submit", this._onUserAction.bind(this));
     }
 
     /**
      * Handling user actions
      * @param {Event} event
      */
-    onUserAction(event) {
+    _onUserAction(event) {
         const element = event.target;
         let formData = {};
 
+        // click on button
         if (element.tagName === "INPUT" && element.type === "button") {
             switch (element.dataset.action) {
                 case "Add new":
@@ -111,6 +112,7 @@ export default class extends Utils {
             }
         }
 
+        // submit event (for example, after Enter key pressed in form field)
         if (event.type === "submit") {
             this.iView.submitForm();
         }

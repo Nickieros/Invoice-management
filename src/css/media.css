@@ -206,7 +206,7 @@
     width: calc(100% - .5em);
   }
 
-  label {
+  .label {
     font-size: 1.1em;
   }
 
@@ -353,7 +353,7 @@
     flex-direction: column;
   }
 
-  label {
+  .label {
     font-size: 1.5em;
   }
 

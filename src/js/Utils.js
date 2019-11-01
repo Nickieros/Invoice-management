@@ -3,14 +3,35 @@
  */
 export default class {
     /**
-     * Show element by assigning class 'visible' with visibility: visible and remove class 'hidden'
+     * Enable element by assigning class 'enabled' with display: block and remove class 'disabled'
      * @param {string} selector element selector
      */
-    static show(selector) {
+    static enable(selector) {
         const element = document.querySelector(selector);
         if (element) {
-            element.classList.remove("hidden");
-            element.classList.add("visible");
+            element.classList.remove("disabled");
+            element.classList.add("enabled");
+        }
+    }
+
+    /**
+     * Delete HTMLElement with a given selector
+     * @param {string} selector element selector
+     */
+    static deleteElement(selector) {
+        const element = document.querySelector(selector);
+        if (element) element.parentElement.removeChild(element);
+    }
+
+    /**
+     * Disable element by assigning class 'disabled' with display: none and remove class 'enabled'
+     * @param {string} selector element selector
+     */
+    static disable(selector) {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.classList.remove("enabled");
+            element.classList.add("disabled");
         }
     }
 
@@ -27,35 +48,14 @@ export default class {
     }
 
     /**
-     * Delete HTMLElement with a given selector
+     * Show element by assigning class 'visible' with visibility: visible and remove class 'hidden'
      * @param {string} selector element selector
      */
-    static deleteElement(selector) {
-        const element = document.querySelector(selector);
-        if (element) element.parentElement.removeChild(element);
-    }
-
-    /**
-     * Enable element by assigning class 'enabled' with display: block and remove class 'disabled'
-     * @param {string} selector element selector
-     */
-    static enable(selector) {
+    static show(selector) {
         const element = document.querySelector(selector);
         if (element) {
-            element.classList.remove("disabled");
-            element.classList.add("enabled");
-        }
-    }
-
-    /**
-     * Disable element by assigning class 'disabled' with display: none and remove class 'enabled'
-     * @param {string} selector element selector
-     */
-    static disable(selector) {
-        const element = document.querySelector(selector);
-        if (element) {
-            element.classList.remove("enabled");
-            element.classList.add("disabled");
+            element.classList.remove("hidden");
+            element.classList.add("visible");
         }
     }
 
@@ -84,24 +84,6 @@ export default class {
     }
 
     /**
-     * Returns true if value type is String
-     * @param {string} value
-     * @returns {boolean}
-     */
-    isString(value) {
-        return typeof value === "string" || value instanceof String;
-    }
-
-    /**
-     * Returns true if value type is real(finite) Number
-     * @param {number} value
-     * @returns {boolean}
-     */
-    isNumber(value) {
-        return typeof value === "number" && Number.isFinite(value);
-    }
-
-    /**
      * Returns true if value type is Array
      * @param {Array} value
      * @returns {boolean}
@@ -111,12 +93,12 @@ export default class {
     }
 
     /**
-     * Returns true if value type is Object
-     * @param {Object} value
+     * Returns true if value type is Boolean
+     * @param {boolean} value
      * @returns {boolean}
      */
-    isObject(value) {
-        return value && typeof value === "object" && value.constructor === Object;
+    isBoolean(value) {
+        return typeof value === "boolean" || value instanceof Boolean;
     }
 
     /**
@@ -129,14 +111,41 @@ export default class {
     }
 
     /**
+     * Returns true if value type is real(finite) Number
+     * @param {number} value
+     * @returns {boolean}
+     */
+    isNumber(value) {
+        return (typeof value === "number" || value instanceof Number) && Number.isFinite(value);
+    }
+
+    /**
+     * Returns true if value type is Object
+     * @param {Object} value
+     * @returns {boolean}
+     */
+    isObject(value) {
+        return value && typeof value === "object" && value.constructor === Object;
+    }
+
+    /**
+     * Returns true if value type is String
+     * @param {string} value
+     * @returns {boolean}
+     */
+    isString(value) {
+        return typeof value === "string" || value instanceof String;
+    }
+
+    /**
      * Validate fetch response from the server. Returns true if validation is successful, else throw error
      * @param {Response} response fetch response from server
      */
-    validateResponse(response) {
+    validateFetchResponse(response) {
         if (!response.ok) {
             // Client (400-500) and server (500-600) errors responses
             throw Error(
-                `_validateResponse() found client error: ${response.status} ${response.statusText} when fetching ${response.url}`
+                `validateFetchResponse() found client error: ${response.status} ${response.statusText} when fetching ${response.url}`
             );
         }
         return true;

@@ -17,7 +17,11 @@ export default class extends Utils {
          */
         this.invoices = [];
 
-        this.lastInvoiceNumber = "000000";
+        /**
+         * Last invoice number is the biggest number in Model's invoices Array
+         * @type {number}
+         */
+        this.lastInvoiceNumber = 0;
     }
 
     /**
@@ -26,15 +30,17 @@ export default class extends Utils {
      * @returns {Promise<void>}
      */
     async addInvoice(invoice) {
+        // add invoice to local storage
         this.invoices.push(invoice);
 
+        // add invoice to remote storage
         await fetch(`${this.DATA_SOURCE_NAME}/invoices`, {
             headers: { "Content-Type": "application/json" },
             method: "POST",
             mode: "cors",
             body: JSON.stringify(invoice),
         })
-            .then(response => this.validateResponse(response))
+            .then(response => this.validateFetchResponse(response))
             .catch(error => console.error("Model -> removeInvoice: ", error.message));
     }
 
@@ -48,8 +54,9 @@ export default class extends Utils {
             method: "GET",
             mode: "cors",
         })
-            .then(response => !this.validateResponse(response) || response.json())
+            .then(response => !this.validateFetchResponse(response) || response.json())
             .then(json => {
+                // add invoices to local storage
                 this.invoices = Object.values(JSON.parse(JSON.stringify(json)));
             })
             .then(() => {
@@ -99,7 +106,7 @@ export default class extends Utils {
 
         let lastInvoiceNumber = 0;
 
-        // search biggest number
+        // search biggest number in invoices Array and put it in lastInvoiceNumber
         this.invoices.forEach(row => {
             if (lastInvoiceNumber < row.number) lastInvoiceNumber = row.number;
         });
@@ -129,7 +136,7 @@ export default class extends Utils {
             method: "DELETE",
             mode: "cors",
         })
-            .then(response => this.validateResponse(response))
+            .then(response => this.validateFetchResponse(response))
             .catch(error => console.error("Model -> removeInvoice: ", error.message));
     }
 
@@ -139,6 +146,12 @@ export default class extends Utils {
      * @returns {Promise<void>}
      */
     async updateInvoice(invoice) {
+        // update invoice in local storage
+        this.invoices.forEach(row => {
+            if (row.id === invoice.id) row = invoice;
+        });
+
+        // update invoice in remote storage
         await fetch(`${this.DATA_SOURCE_NAME}/invoices/${invoice.id}`, {
             headers: { "Content-Type": "application/json" },
             // use the PATCH method to optimize interaction with resource,
@@ -148,10 +161,7 @@ export default class extends Utils {
             mode: "cors",
             body: JSON.stringify(invoice),
         })
-            .then(response => this.validateResponse(response))
+            .then(response => this.validateFetchResponse(response))
             .catch(error => console.error("Model -> updateInvoice: ", error.message));
-
-        // refresh local data storage
-        this.downloadInvoices();
     }
 }
