@@ -1,10 +1,13 @@
 # Invoice-management
 Invoice-management:
-
 - create new invoice, edit, delete
 - desktop and mobile view
+
+Using:
 - adaptive and responsive layout techniques
-- using RESTful API
+- HTML / CSS (layout and animation) / Javascript
+- RESTful API with JSON payload
+- MVC model
 
 ![Screenshot](readme_media/screenshot.png "Screenshot")
 
