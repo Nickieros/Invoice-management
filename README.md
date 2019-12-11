@@ -16,3 +16,6 @@ Using:
 ![Mobile view gallery in video](readme_media/slideshow.mp4 "Mobile view gallery in video")
 
 [Video demonstration](https://clc.to/Invoice.Management)
+
+###TODO
+layout refactoring

@@ -265,7 +265,7 @@
   }
 }
 
-@media (max-aspect-ratio: 3/4) {
+@media screen and (max-width: 720px), screen and (max-aspect-ratio: 3/4) {
   body {
     font-size: 3.37vw;
   }
