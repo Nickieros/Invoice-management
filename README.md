@@ -9,9 +9,6 @@ Using:
 - RESTful API with JSON payload
 - MVC model
 
-
-
-
 ![Screenshot](readme_media/screenshot.png "Screenshot")
 
 ![Mobile view gallery in animated gif](readme_media/slideshow.gif "Mobile view gallery in animated gif")
@@ -20,5 +17,5 @@ Using:
 
 [Video demonstration](https://clc.to/Invoice.Management)
 
-##TODO
-layout refactoring
+###TODO
+layout refactoring for desktop view
