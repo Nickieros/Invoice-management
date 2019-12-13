@@ -17,5 +17,3 @@ Using:
 
 [Video demonstration](https://clc.to/Invoice.Management)
 
-##TODO
-layout refactoring
